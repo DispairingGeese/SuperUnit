@@ -1,0 +1,25 @@
+using "C:\...\MyPackage.dll";
+
+using namespace System;
+using namespace System.Numerics;
+
+test_group MathfClass;
+
+do Mathf->Sum(int, int):
+    case (5, 2) expect 7,
+    case (7, 1) expect 8;
+
+do Mathf->Sum(float, float):
+    case (6.6f, 2.1f) expect 8.7f,
+    case (2.7f, 1f) expect 3.7f;
+
+do Mathf->Sqrt(int):
+    case (4) expect 2,
+    case (-1) throws Exception;
+
+test_group Vector2Class;
+
+do Vector2->Add:
+    on new (5f, 5f):
+        case (new Vector2(2f, 2f)) expect new Vector2(7f, 7f),
+        case (new Vector2(1f, 1f)) expect new Vector2(6f, 6f);

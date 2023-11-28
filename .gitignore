@@ -1,0 +1,7 @@
+.idea/
+.vs/
+
+SuperUnit/bin/
+SuperUnit/obj/
+
+SuperUnit.sln.DotSettings.user
