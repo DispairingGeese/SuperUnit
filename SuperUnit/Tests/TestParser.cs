@@ -1,8 +1,8 @@
 using System.Reflection;
 using System.Security;
+using SuperUnit.Tests.Results.ExpectedResult;
 using SuperUnit.Tests.Results.ExpectedResult.Return;
 using SuperUnit.Tests.Results.ExpectedResult.Thrown;
-using SuperUnit.Tests.Results.MethodResult;
 using SuperUnit.Tokeniser.Token;
 
 namespace SuperUnit.Tests;
@@ -253,16 +253,14 @@ public class TestParser
                     {
                         case Keyword.Expect:
                             Advance();
-
-                            cases.Add(new TestCase(currentTestTargetActivator, @params, new EqualityTestExpectedResult(ParseValue())));
+                            
+                            cases.Add(new TestCase(currentTestTargetActivator, @params, ParseExpectResult()));
                             break;
 
                         case Keyword.Throws:
                             Advance();
 
-                            var thrownObject = ParseValue();
-
-                            cases.Add(new TestCase(currentTestTargetActivator, @params, new ExceptionThrownTestExpectedResult(thrownObject)));
+                            cases.Add(new TestCase(currentTestTargetActivator, @params, ParseThrownResult()));
 
                             break;
 
@@ -467,6 +465,40 @@ public class TestParser
     private ParserException CreateParserException(string message, Token? referencePoint = null)
     {
         return new ParserException(message, (referencePoint ?? _currentToken) ?? new NullToken());
+    }
+
+    private ITestExpectedResult ParseExpectResult()
+    {
+        if (_currentToken is SymbolToken { Symbol: Symbol.Tilde })
+        {
+            Advance();
+            return new EquivalenceTestExpectedResult(ParseValue());
+        }
+
+        if (_currentToken is KeywordToken { Keyword: Keyword.InstanceOf })
+        {
+            Advance();
+            return new TypeMatchExpectedResult(ParseValue() as Type ?? throw CreateParserException("Expected Type Name"));
+        }
+        
+        return new EqualityTestExpectedResult(ParseValue());
+    }
+    
+    private ITestExpectedResult ParseThrownResult()
+    {
+        if (_currentToken is SymbolToken { Symbol: Symbol.Tilde })
+        {
+            Advance();
+            return new ExceptionEquivalenceTestExpectedResult(ParseValue());
+        }
+
+        if (_currentToken is KeywordToken { Keyword: Keyword.InstanceOf })
+        {
+            Advance();
+            return new ExceptionTypeMatchExpectedResult(ParseValue() as Type ?? throw CreateParserException("Expected Type Name"));
+        }
+        
+        return new ExceptionEqualityTestExpectedResult(ParseValue());
     }
 
     private Type[] InferParameterTypes(object[] @params)

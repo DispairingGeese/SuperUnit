@@ -1,5 +1,4 @@
 using SuperUnit.Tests.Results.ExpectedResult;
-using SuperUnit.Tests.Results.MethodResult;
 
 namespace SuperUnit.Tests;
 
