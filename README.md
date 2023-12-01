@@ -32,12 +32,11 @@ do Mathf->Sum(float, float):
     case (2.7f, 1f) expect 3.7f;
 ```
 
-In some cases, it may be that you are expecting an error to be thrown. In this case, the `throws` keyword can be used, followed by the __type__ of the error thrown. If an error of the type specified is thrown, the test is marked as passing. If the method call does not throw an error, or the error is not of the specified type, then the test is marked as failing. Note that this is checking for an exact match; in the below test, if a hypothetical Sqrt function threw `InvalidOperationException` for negative values, the test would be marked as failing, even though `InvalidOperationException` derives from `Exception`.
+In some cases, it may be that you are expecting an error to be thrown. In this case, the `throws` keyword can be used. Note that the following code will fail as by default reference equality is used. See section on [type checks](#type-checks).
 
 ```csharp
 do Mathf->Sqrt(int):
-    case (-1) throws Exception, :: This would fail
-    case (-1) throws InvalidOperationException; :: This would pass
+    case (-1) throws new InvalidOperationException();
 ```
 
 Object creation is supported via constructors using the `new` keyword, and are able to be used as both method parameters and expected return values.
@@ -145,6 +144,22 @@ In .NET, there are many different types for both integers and floats. By default
 | `float` (`Single`)    | `f`     | `5.2f`   |
 | `double` (`Double`)   | `d`     | `1.95d`  |
 | `decimal` (`Decimal`) | `m`     | `2.712m` |
+
+### Different Types of Tests
+
+By default, `expect` and `throws` use the `==` operator to check for equality. However, this is often inappropriate, such as reference types without the `==` operator overloaded (defaulting to reference equality which is never true). There are two extra types of tests for both return values and thrown exception.
+
+#### Equivalence Tests
+Denoted by `expect~` or `throws~`, equivalence tests are marked as passing when all public properties are equal. See [this GitHub issue](https://github.com/xunit/xunit/issues/1604) for more information.
+
+#### Type Checks
+Denoted by `expect instanceof` or `throws instanceof`, type checks are marked as passing when both the expected value and got value are of the same type. This is most appropriate for exception checking, such as in the following example.
+
+```csharp
+do Mathf->Sqrt(int):
+    case (-1) throws instanceof Exception, :: This would fail as type checks check for exact matches of types
+    case (-1) throws instanceof InvalidOperationException;
+```
 
 ## Library Limitations
 - Null and nullable types are not yet supported due to issues regarding nullable reference types in C#
