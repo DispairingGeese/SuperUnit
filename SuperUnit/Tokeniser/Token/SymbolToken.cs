@@ -20,6 +20,7 @@ public class SymbolToken : Token
                 Symbol.SemiColon => "SemiColon",
                 Symbol.Colon => "Colon",
                 Symbol.QuestionMark => "QuestionMark",
+                Symbol.Tilde => "Tilde",
                 _ => throw new ArgumentOutOfRangeException(),
             }
         } ]";
@@ -35,4 +36,5 @@ public enum Symbol
     Comma,
     Colon,
     QuestionMark,
+    Tilde,
 }
