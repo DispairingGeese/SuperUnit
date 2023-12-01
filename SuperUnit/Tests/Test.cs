@@ -42,7 +42,7 @@ public readonly struct Test
             if (exceptionThrown != null)
             {
                 yield return new TestCaseResult(testCase.Parameters, testCase.ExpectedResult,
-                    new ExceptionThrownMethodResult(exceptionThrown.GetType()));
+                    new ExceptionThrownMethodResult(exceptionThrown));
             }
             else
             {

@@ -55,7 +55,7 @@ public static class TestPrinter
             foreach (var testCaseResult in failingCaseResults)
             {
                 Console.WriteLine($"{result.Method.DeclaringType?.Name ?? "UndefinedType"}->{result.Method.Name}{testCaseResult.Parameters.Aggregate("(", (s, o) => s + o.ToTypedString() + ',').TrimEnd(',')})" +
-                                  $"failed, expected {testCaseResult.ExpectedResult}, got {testCaseResult.ActualResult}");
+                                  $"failed, expected {testCaseResult.ExpectedResult}, got {testCaseResult.MethodResult}");
             }
         }
 

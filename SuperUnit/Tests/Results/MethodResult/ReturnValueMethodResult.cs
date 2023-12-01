@@ -13,10 +13,4 @@ public class ReturnValueMethodResult : IMethodResult
     {
         return $"{ReturnValue.ToTypedString()} returned";
     }
-
-    public bool Matches(IMethodResult other)
-    {
-        return other is ReturnValueMethodResult returnValueMethodResult 
-               && returnValueMethodResult.ReturnValue.Equals(ReturnValue);
-    }
 }
