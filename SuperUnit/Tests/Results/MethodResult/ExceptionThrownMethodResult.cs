@@ -2,21 +2,15 @@ namespace SuperUnit.Tests.Results.MethodResult;
 
 public class ExceptionThrownMethodResult : IMethodResult
 {
-    public Type ThrownExceptionType { get; }
+    public object ThrownException { get; }
     
-    public ExceptionThrownMethodResult(Type thrownExceptionType)
+    public ExceptionThrownMethodResult(object thrownException)
     {
-        ThrownExceptionType = thrownExceptionType;
+        ThrownException = thrownException;
     }
     
     public override string ToString()
     {
-        return $"{ThrownExceptionType.Name} thrown";
-    }
-
-    public bool Matches(IMethodResult other)
-    {
-        return other is ExceptionThrownMethodResult exceptionThrownMethodResult
-               && exceptionThrownMethodResult.ThrownExceptionType == ThrownExceptionType;
+        return $"{ThrownException.ToTypedString()} thrown";
     }
 }

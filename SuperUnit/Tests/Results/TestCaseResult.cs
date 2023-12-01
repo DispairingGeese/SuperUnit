@@ -1,3 +1,4 @@
+using SuperUnit.Tests.Results.ExpectedResult;
 using SuperUnit.Tests.Results.MethodResult;
 
 namespace SuperUnit.Tests.Results;
@@ -6,22 +7,22 @@ public readonly struct TestCaseResult
 {
     public object[] Parameters { get; }
     
-    public IMethodResult ExpectedResult { get; }
+    public ITestExpectedResult ExpectedResult { get; }
     
-    public IMethodResult ActualResult { get; }
+    public IMethodResult MethodResult { get; }
 
-    public bool IsSuccessful => ExpectedResult.Matches(ActualResult);
+    public bool IsSuccessful => ExpectedResult.Test(MethodResult);
     
-    public TestCaseResult(object[] parameters, IMethodResult expectedResult, IMethodResult actualResult)
+    public TestCaseResult(object[] parameters, ITestExpectedResult expectedResult, IMethodResult methodResult)
     {
         Parameters = parameters;
-        
+
         ExpectedResult = expectedResult;
-        ActualResult = actualResult;
+        MethodResult = methodResult;
     }
 
     public override string ToString()
     {
-        return $"Expected: {ExpectedResult}, Got: {ActualResult}";
+        return $"Expected: {ExpectedResult}, Got: {MethodResult}";
     }
 }

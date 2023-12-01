@@ -1,5 +1,7 @@
 using System.Reflection;
 using System.Security;
+using SuperUnit.Tests.Results.ExpectedResult.Return;
+using SuperUnit.Tests.Results.ExpectedResult.Thrown;
 using SuperUnit.Tests.Results.MethodResult;
 using SuperUnit.Tokeniser.Token;
 
@@ -252,7 +254,7 @@ public class TestParser
                         case Keyword.Expect:
                             Advance();
 
-                            cases.Add(new TestCase(currentTestTargetActivator, @params, new ReturnValueMethodResult(ParseValue())));
+                            cases.Add(new TestCase(currentTestTargetActivator, @params, new EqualityTestExpectedResult(ParseValue())));
                             break;
 
                         case Keyword.Throws:
@@ -260,12 +262,7 @@ public class TestParser
 
                             var thrownObject = ParseValue();
 
-                            if (thrownObject is not Type thrownException || !thrownException.IsAssignableTo(typeof(Exception)))
-                            {
-                                throw CreateParserException("Thrown Value is not a type which derives from Exception");
-                            }
-
-                            cases.Add(new TestCase(currentTestTargetActivator, @params, new ExceptionThrownMethodResult(thrownException)));
+                            cases.Add(new TestCase(currentTestTargetActivator, @params, new ExceptionThrownTestExpectedResult(thrownObject)));
 
                             break;
 
