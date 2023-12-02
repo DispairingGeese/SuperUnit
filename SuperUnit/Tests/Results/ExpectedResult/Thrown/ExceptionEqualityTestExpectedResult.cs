@@ -4,23 +4,23 @@ using Xunit.Sdk;
 
 namespace SuperUnit.Tests.Results.ExpectedResult.Thrown;
 
-public class ExceptionThrownTestExpectedResult : ITestExpectedResult
+public class ExceptionEqualityTestExpectedResult : ITestExpectedResult
 {
     public object ExpectedExceptionThrown { get; }
 
-    public ExceptionThrownTestExpectedResult(object expectedExceptionThrown)
+    public ExceptionEqualityTestExpectedResult(object expectedExceptionThrown)
     {
         ExpectedExceptionThrown = expectedExceptionThrown;
     }
     
     public bool Test(IMethodResult actual)
     {
-        if (actual is not ExceptionThrownMethodResult returnValueMethodResult)
+        if (actual is not ExceptionThrownMethodResult exceptionThrownMethodResult)
             return false;
 
         try
         {
-            Assert.Equal(ExpectedExceptionThrown, returnValueMethodResult.ThrownException);
+            Assert.Equal(ExpectedExceptionThrown, exceptionThrownMethodResult.ThrownException);
         }
         catch (EqualException)
         {

@@ -25,6 +25,7 @@ public class Lexer
         { "throws", Keyword.Throws },
         { "on", Keyword.On },
         { "namespace", Keyword.Namespace },
+        { "instanceof", Keyword.InstanceOf },
     };
 
     private static readonly Dictionary<char, Symbol> Symbols = new()
@@ -34,6 +35,7 @@ public class Lexer
         { ')', Symbol.RParen },
         { ',', Symbol.Comma },
         { ':', Symbol.Colon },
+        { '~', Symbol.Tilde },
     };
 
     private static readonly Dictionary<string, Symbol> BinarySymbols = new()

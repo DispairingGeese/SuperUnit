@@ -22,6 +22,7 @@ public class KeywordToken : Token
                 Keyword.Throws => "Throws",
                 Keyword.On => "On",
                 Keyword.Namespace => "Namespace",
+                Keyword.InstanceOf => "InstanceOf",
                 _ => throw new ArgumentOutOfRangeException(),
             }
         } ]";
@@ -39,4 +40,5 @@ public enum Keyword
     Throws,
     On,
     Namespace,
+    InstanceOf,
 }
